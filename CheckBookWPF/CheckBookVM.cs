@@ -38,6 +38,13 @@ namespace CheckBookWPF
             set { _newTransaction = value; OnPropertyChanged(); }
 
     }
+        public Account _NewAccount = new Account();
+        public Account NewAccount
+        {
+            get { return _NewAccount; }
+            set { _NewAccount = value; OnPropertyChanged(); }
+        }
+
         private DelegateCommand _Save;
         public ICommand Save
         {
@@ -62,6 +69,26 @@ namespace CheckBookWPF
                 return _Save;
             }
         }
+
+        private DelegateCommand _Create_Account;
+        public ICommand Create_Account
+        {
+            get
+            {
+
+                return new DelegateCommand
+                {
+                    ExecuteFunction = _ =>
+                    {
+                        _Db.Accounts.Add(_NewAccount);
+                        _Db.SaveChanges(); NewAccount = new Account();
+                    },
+                    CanExecuteFunction = x => NewAccount.Name != null && NewAccount.Institution !=null
+                };
+
+            }
+        }
+
         
 
         public void Fill()

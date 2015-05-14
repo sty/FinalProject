@@ -68,6 +68,7 @@
     <Compile Include="BaseVM.cs" />
     <Compile Include="CbDb.cs" />
     <Compile Include="CheckBookVM.cs" />
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Transaction.cs" />
     <Page Include="MainWindow.xaml">
