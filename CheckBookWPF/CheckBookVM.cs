@@ -57,8 +57,8 @@ namespace CheckBookWPF
                         ExecuteFunction = x =>
                         {
                             _Db.Transactions.Add(_newTransaction);
-                            Account updateAccount = (from A in Accounts where A == _newTransaction.Account select A).Single();
-                            updateAccount.Amount += _newTransaction.Amount;
+                            Account query= (from i in Accounts where i == _newTransaction.Account select i).Single();
+                            query.Amount += _newTransaction.Amount;
                             _Db.SaveChanges(); newTransaction = new Transaction { Date = DateTime.Now };
 
                         },
