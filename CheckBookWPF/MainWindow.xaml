@@ -21,7 +21,7 @@
         <GridSplitter Width="5" VerticalAlignment="Stretch" HorizontalAlignment="Right" Grid.Column="1" />
         <GridSplitter Height="5" VerticalAlignment="Bottom" HorizontalAlignment="Stretch" Grid.ColumnSpan="3" />
         <Button Grid.Row="1" Grid.Column="2" DataContext="Binding" Name="newTransaction"  HorizontalAlignment="Center" Width="100" Content="Add Transaction" Click="ButtonAddAccount_Click" />
-        <Button Grid.Row="2" Command="{Binding Open_Account}" HorizontalAlignment="Right" Width="120" Height="25" VerticalAlignment="Top" Margin="0,0,97,0" Content="Create New Account" />
+        <Button Grid.Row="2" Command="{Binding Save}" HorizontalAlignment="Right" Width="120" Height="25" VerticalAlignment="Top" Margin="0,0,97,0" Content="Create New Account" Click="NewAccount_Click" />
         <Grid x:Name="grid1" Grid.Column="2" DataContext="{Binding newTransaction}" HorizontalAlignment="Left" Margin="5,0,0,0" VerticalAlignment="Top" Height="273" Width="316">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
@@ -104,7 +104,7 @@
                 </GridView>
             </ListView.View>
         </ListView>
-        <Grid x:Name="grid2" DataContext="{StaticResource accountViewSource}" HorizontalAlignment="Left" Margin="58,157,0,0" VerticalAlignment="Top">
+        <Grid x:Name="grid2" DataContext="{StaticResource }" HorizontalAlignment="Left" Margin="58,157,0,0" VerticalAlignment="Top">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto"/>

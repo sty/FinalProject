@@ -36,7 +36,14 @@ namespace CheckBookWPF
 
         private void ButtonAddAccount_Click(object sender, RoutedEventArgs e)
         {
+           
             
+        }
+
+        private void NewAccount_Click(object sender, RoutedEventArgs e)
+        {
+
+
         }
 
         
