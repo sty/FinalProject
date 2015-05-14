@@ -21,7 +21,7 @@
         <GridSplitter Width="5" VerticalAlignment="Stretch" HorizontalAlignment="Right" Grid.Column="1" />
         <GridSplitter Height="5" VerticalAlignment="Bottom" HorizontalAlignment="Stretch" Grid.ColumnSpan="3" />
         <Button Grid.Row="1" Grid.Column="2" DataContext="Binding" Name="newTransaction"  HorizontalAlignment="Center" Width="100" Content="Add Transaction" Click="ButtonAddAccount_Click" />
-        <Button Grid.Row="2" Grid.Column="0" Command="{Binding newAccount}"  HorizontalAlignment="Center" Width="100" Content="Create Account" />
+        <Button Grid.Row="2" Command="{Binding Open_Account}" HorizontalAlignment="Right" Width="120" Height="25" VerticalAlignment="Top" Margin="0,0,97,0" Content="Create New Account" />
         <Grid x:Name="grid1" Grid.Column="2" DataContext="{Binding newTransaction}" HorizontalAlignment="Left" Margin="5,0,0,0" VerticalAlignment="Top" Height="273" Width="316">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
@@ -35,8 +35,10 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
+            
             <Label Content="Account :" Grid.Column="0" HorizontalAlignment="Left" Margin="3" Grid.Row="0" VerticalAlignment="Center"/>
-            <TextBox x:Name="accountIdTextBox" Grid.Column="1" HorizontalAlignment="Left" Height="25" Margin="3,5,-101,3" Grid.Row="0" Text="{Binding AccountId, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" VerticalAlignment="Center" Width="225"/>
+            
+            <ComboBox x:Name="accountIdTextBox" Grid.Column="1" HorizontalAlignment="Left" Height="25" Margin="3,5,-101,3" Grid.Row="0"  ItemsSource="{Binding ElementName=root, Path=DataContext.Accounts}" VerticalAlignment="Center" Width="225"/>
             <Label Content="Amount:" Grid.Column="0" HorizontalAlignment="Left" Margin="3" Grid.Row="1" VerticalAlignment="Center"/>
             <TextBox x:Name="amountTextBox" Grid.Column="1" HorizontalAlignment="Left" Height="25" Margin="3,5,-100,3" Grid.Row="1" Text="{Binding Amount, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" VerticalAlignment="Center" Width="225"/>
             <Label Content="Date:" Grid.Column="0" HorizontalAlignment="Left" Margin="3" Grid.Row="2" VerticalAlignment="Center"/>
@@ -46,7 +48,7 @@
             <Label Content="Tag:" Grid.Column="0" HorizontalAlignment="Left" Margin="3" Grid.Row="5" VerticalAlignment="Center"/>
             <TextBox x:Name="tagTextBox" Grid.Column="1" HorizontalAlignment="Left" Height="25" Margin="3,5,-96,4" Grid.Row="5" Text="{Binding Tag, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" VerticalAlignment="Center" Width="225"/>
         </Grid>
-        <DataGrid x:Name="accountDataGrid" AutoGenerateColumns="False" EnableRowVirtualization="True" ItemsSource="{Binding Account}" Margin="0,0,0,154" RowDetailsVisibilityMode="VisibleWhenSelected">
+        <DataGrid x:Name="accountDataGrid" AutoGenerateColumns="False" EnableRowVirtualization="True" SelectedItem="{Binding CurrentAccount}" ItemsSource="{Binding Accounts}" Margin="0,0,0,154" RowDetailsVisibilityMode="VisibleWhenSelected">
             <DataGrid.Columns>
                 <DataGridTextColumn x:Name="idColumn" Binding="{Binding Id}" Header="Account" Width="SizeToHeader"/>
                 <DataGridTextColumn x:Name="nameColumn" Binding="{Binding Name}" Header="Name" Width="SizeToHeader"/>
@@ -54,7 +56,7 @@
                 <DataGridTextColumn x:Name="amountColumn" Binding="{Binding Amount}" Header="Amount" Width="SizeToHeader"/>
             </DataGrid.Columns>
         </DataGrid>
-        <ListView x:Name="transactionListView" Grid.Column="1" ItemsSource="{Binding Transaction}" Margin="0,2,4,97" SelectionMode="Single">
+        <ListView x:Name="transactionListView" Grid.Column="1" ItemsSource="{Binding Transactions}" Margin="0,2,4,0" SelectionMode="Single">
             <ListView.ItemContainerStyle>
                 <Style>
                     <Setter Property="Control.HorizontalContentAlignment" Value="Stretch"/>
@@ -66,14 +68,14 @@
                     <GridViewColumn x:Name="accountIdColumn" Header="Account" Width="80">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
-                                <TextBox Margin="6,-1,-6,-1" Text="{Binding AccountId, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"/>
+                                <TextBox Margin="6,-1,-6,-1" Text="{Binding AccountId}"/>
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
                     <GridViewColumn x:Name="amountColumn1" Header="Amount" Width="80">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
-                                <TextBox Margin="-6,-1" Text="{Binding Amount, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"/>
+                                <TextBox Margin="-6,-1" Text="{Binding Amount}"/>
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
@@ -88,14 +90,14 @@
                     <GridViewColumn x:Name="payeeColumn" Header="Payee" Width="80">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
-                                <TextBox Margin="-6,-1" Text="{Binding Payee, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"/>
+                                <TextBox Margin="-6,-1" Text="{Binding Payee}"/>
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
                     <GridViewColumn x:Name="tagColumn" Header="Tag" Width="80">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
-                                <TextBox Margin="-6,-1" Text="{Binding Tag, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"/>
+                                <TextBox Margin="-6,-1" Text="{Binding Tag}"/>
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
@@ -114,13 +116,11 @@
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
             <Label Content="Amount:" Grid.Column="0" HorizontalAlignment="Left" Margin="3" Grid.Row="0" VerticalAlignment="Center"/>
-            <TextBox x:Name="amountTextBox1" Grid.Column="1" HorizontalAlignment="Left" Height="23" Margin="3" Grid.Row="0" Text="{Binding Amount, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" VerticalAlignment="Center" Width="120"/>
-            <Label Content="Id:" Grid.Column="0" HorizontalAlignment="Left" Margin="3" Grid.Row="1" VerticalAlignment="Center"/>
-            <TextBox x:Name="idTextBox" Grid.Column="1" HorizontalAlignment="Left" Height="23" Margin="3" Grid.Row="1" Text="{Binding Id, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" VerticalAlignment="Center" Width="120"/>
-            <Label Content="Institution:" Grid.Column="0" HorizontalAlignment="Left" Margin="3" Grid.Row="2" VerticalAlignment="Center"/>
-            <TextBox x:Name="institutionTextBox" Grid.Column="1" HorizontalAlignment="Left" Height="23" Margin="3" Grid.Row="2" Text="{Binding Institution, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" VerticalAlignment="Center" Width="120"/>
+            <TextBox x:Name="amountTextBox1" Grid.Column="1" HorizontalAlignment="Left" Height="23" Margin="3" Grid.Row="0" Text="{Binding Data.Amount, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" VerticalAlignment="Center" Width="120"/>
+          <Label Content="Institution:" Grid.Column="0" HorizontalAlignment="Left" Margin="3" Grid.Row="2" VerticalAlignment="Center"/>
+            <TextBox x:Name="institutionTextBox" Grid.Column="1" HorizontalAlignment="Left" Height="23" Margin="3" Grid.Row="2" Text="{Binding Data.Institution, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" VerticalAlignment="Center" Width="120"/>
             <Label Content="Name:" Grid.Column="0" HorizontalAlignment="Left" Margin="3" Grid.Row="3" VerticalAlignment="Center"/>
-            <TextBox x:Name="nameTextBox" Grid.Column="1" HorizontalAlignment="Left" Height="23" Margin="3" Grid.Row="3" Text="{Binding Name, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" VerticalAlignment="Center" Width="120"/>
+            <TextBox x:Name="nameTextBox" Grid.Column="1" HorizontalAlignment="Left" Height="23" Margin="3" Grid.Row="3" Text="{Binding Data.Name, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" VerticalAlignment="Center" Width="120"/>
         </Grid>
     </Grid>
 </Window>
